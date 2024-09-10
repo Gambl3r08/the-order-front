@@ -25,12 +25,22 @@ export class ProductFormComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-
+  resetForm() {
+    this.productForm.reset({
+      product_name: '',
+      price: 0,
+      description: ''
+    });
+  }
   onSubmit() {
     if(this.productForm.valid) {
       const product: Product = this.productForm.value;
       this.productService.createProduct(product).subscribe({
-        next: (product) => console.log('Product created', product),
+        next: (product) => {
+          console.log('Product created', product);
+          this.resetForm();
+        },
+        
         error: (err) => console.error('Error creating product', err)
       });
     }

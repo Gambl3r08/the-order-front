@@ -1,5 +1,7 @@
-<ul>
-    <li *ngFor="let product of products">
-      {{ product.product_name }}
-    </li>
+<ul class="product-list">
+  <li *ngFor="let product of products" class="product-item">
+    <span class="product-name">{{ product.product_name }}</span>
+    <div class="product-actions">
+    </div>
+  </li>
 </ul>

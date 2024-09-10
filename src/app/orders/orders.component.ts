@@ -18,9 +18,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class OrdersComponent implements OnInit, OnDestroy {
   orders: OrderWithSub[] = [];
   products: Product[] = [];
+  
   orderForm: FormGroup;
   private ordersSubscription: Subscription | undefined;
   private productsSubscription: Subscription | undefined;
+  shippingTypes: any[] = [];
+  private shippingTypesSubscription: Subscription | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -30,7 +33,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.orderForm = this.fb.group({
       customer_name: ['', Validators.required],
       observations: [''],
-      shipping: [0, Validators.required],
+      shipping: [''],
       product_select: [''],
       products: this.fb.array([])
     });
@@ -39,6 +42,16 @@ export class OrdersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadOrders();
     this.loadProducts();
+    this.loadShippingTypes();
+  }
+
+  loadShippingTypes(): void {
+    this.shippingTypesSubscription = this.orderService.getOrderTypes().subscribe({
+      next: (response) => {
+        this.shippingTypes = response;
+      },
+      error: (err) => console.error('Error fetching shipping types', err)
+    });
   }
 
   loadOrders() {
@@ -109,7 +122,15 @@ export class OrdersComponent implements OnInit, OnDestroy {
   removeProduct(index: number) {
     this.productsArray.removeAt(index);
   }
-
+  resetForm() {
+    this.orderForm.reset({
+      customer_name: '',
+      observations: '',
+      shipping: '',
+      product_select: '',
+      products: []
+    });
+  }
   onSubmit() {
     if (this.orderForm.valid) {
       const orderValue = { ...this.orderForm.value };
@@ -119,6 +140,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
         next: (response) => {
           console.log('Order created', response);
           this.loadOrders();
+          this.resetForm();
         },
         error: (err) => console.error('Error creating order', err)
       });
