@@ -1,9 +1,17 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ProductsComponent } from './products/products.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ProductFormComponent } from "./product-form/product-form.component";
 
 
-let importList = [ProductsComponent, RouterOutlet]
+
+let importList = [
+  ProductsComponent,
+  RouterOutlet,
+  ReactiveFormsModule,
+  ProductFormComponent
+]
 
 @Component({
   selector: 'app-root',

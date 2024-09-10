@@ -1,0 +1,25 @@
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="product_name">Nombre del producto:</label>
+      <input id="product_name" formControlName="product_name" type="text" />
+      <div *ngIf="productForm.get('product_name')?.invalid && productForm.get('name')?.touched">
+        El nombre es obligatorio.
+      </div>
+    </div>
+  
+    <div>
+      <label for="description">Descripción:</label>
+      <textarea id="description" formControlName="description"></textarea>
+    </div>
+  
+    <div>
+      <label for="price">Precio:</label>
+      <input id="price" formControlName="price" type="number" />
+      <div *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched">
+        El precio debe ser un valor positivo.
+      </div>
+    </div>
+  
+    <button type="submit" [disabled]="productForm.invalid">Crear Producto</button>
+  </form>
+  

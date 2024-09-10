@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable, map } from "rxjs";
+import { Observable, map , Subject} from "rxjs";
 import { Product } from "./product.model";
+import { tap } from 'rxjs/operators';
 
 interface ProductResponse {
   status: number;
@@ -14,7 +15,8 @@ interface ProductResponse {
 })
 export class ProductService {
   private apiUrl = 'http://localhost:8001/api/v1/products';
-  
+  private productCreatedSubject = new Subject<void>();
+  productCreated$ = this.productCreatedSubject.asObservable();
   constructor(private http: HttpClient) { }
  
   getProducts(): Observable<Product[]> {
@@ -24,7 +26,9 @@ export class ProductService {
   }
 
   createProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.apiUrl, product);
+    return this.http.post<Product>(this.apiUrl, product).pipe(
+      tap(() => {this.productCreatedSubject.next();})
+    );
   }
 
   updateProduct(product: Product): Observable<Product> {
