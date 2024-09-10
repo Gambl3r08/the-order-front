@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { ProductsComponent } from './products/products.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProductFormComponent } from "./product-form/product-form.component";
+import { OrdersComponent } from "./orders/orders.component";
 
 
 
@@ -10,7 +11,8 @@ let importList = [
   ProductsComponent,
   RouterOutlet,
   ReactiveFormsModule,
-  ProductFormComponent
+  ProductFormComponent,
+  OrdersComponent
 ]
 
 @Component({
